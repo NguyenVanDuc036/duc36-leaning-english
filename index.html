@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>English</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background-color: #f4f4f4;
+    }
+
+    .question {
+      background-color: #fff;
+      padding: 15px;
+      margin-bottom: 15px;
+      cursor: pointer;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+    }
+
+    .question:hover {
+      background-color: #f9f9f9;
+    }
+
+    .answer {
+      display: none;
+      margin-top: 10px;
+    }
+
+    .active {
+      background-color: #e2f0fc;
+    }
+
+    .pagination {
+      display: flex;
+      list-style: none;
+      padding: 0;
+    }
+
+    .page-link {
+      padding: 8px;
+      margin: 5px;
+      cursor: pointer;
+      background-color: #ddd;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      text-decoration: none;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="questions-container"></div>
+
+  <ul class="pagination" id="pagination"></ul>
+
+  <script>
+    // Mock data - replace with your actual questions
+    var questions = [
+        {
+            vietnamese : 'Có cái gì trong chiếc hộp vậy',
+            english : 'What’s in the box'
+        },
+        {
+            vietnamese : 'Tôi vừa đến kịp chuyến bay',
+            english : 'I arrived just in time for the plane'
+        },
+        {
+            vietnamese : 'Cô gái giống mẹ',
+            english : 'The girl resembled her mother'
+        },
+        {
+            vietnamese : 'Tôi có nhiều bạn ở nước ngoài',
+            english : 'I have many friend in foreign countries'
+        },
+        {
+            vietnamese : 'Nó có vẻ ngon',
+            english : 'It smell delicious'
+        },
+        {
+            vietnamese : 'Bạn có thể mang cho tôi chiếc gối và chăn không',
+            english : 'Could you bring me a pillow and blanket, please'
+        },
+        {
+            vietnamese : 'Những sản phẩm này đang bán chạy',
+            english : 'These products are selling like hot cakes'
+        },
+        {
+            vietnamese : 'The pain is getting worse',
+            english : 'Cơn đau ngày càng tệ hơn'
+        },
+        {
+            vietnamese : 'Tôi thường tắm trước khi ngủ',
+            english : 'I usually take a bath before going to bed'
+        },
+        {
+            vietnamese : 'Hãy theo gương của anh ấy',
+            english : 'Follow his example'
+        },
+        ///
+    ];
+
+
+    var questionsContainer = document.getElementById('questions-container');
+    var paginationContainer = document.getElementById('pagination');
+    var questionsPerPage = 10;
+    var currentPage = 1;
+
+    function displayQuestions(page) {
+      var startIndex = (page - 1) * questionsPerPage;
+      var endIndex = startIndex + questionsPerPage;
+      var pageQuestions = questions.slice(startIndex, endIndex);
+
+      questionsContainer.innerHTML = '';
+      pageQuestions.forEach(function (question, index) {
+        var questionDiv = document.createElement('div');
+        questionDiv.className = 'question';
+        questionDiv.innerHTML = `
+          <div onclick="toggleAnswer(this, ${startIndex + index})">${question.vietnamese}</div>
+          <div class="answer">${question.english}</div>
+        `;
+        questionsContainer.appendChild(questionDiv);
+      });
+    }
+
+    function displayPagination() {
+      var totalPages = Math.ceil(questions.length / questionsPerPage);
+
+      paginationContainer.innerHTML = '';
+      for (var i = 1; i <= totalPages; i++) {
+        var pageLink = document.createElement('li');
+        pageLink.innerHTML = `<a href="#" class="page-link" onclick="changePage(${i})">${i}</a>`;
+        paginationContainer.appendChild(pageLink);
+      }
+    }
+
+    function toggleAnswer(clickedElement, questionNumber) {
+      var answer = document.querySelector('.question.active .answer');
+      if (answer) {
+        answer.style.display = 'none';
+        clickedElement.classList.remove('active');
+        // document.querySelector('.question.active').classList.remove('active');
+      }
+
+    //   clickedElement.classList.add('active');
+      answer = clickedElement.nextElementSibling;
+      answer.style.display = (answer.style.display === 'block') ? 'none' : 'block';
+    }
+
+    function changePage(page) {
+      currentPage = page;
+      displayQuestions(currentPage);
+    }
+
+    displayQuestions(currentPage);
+    displayPagination();
+  </script>
+
+</body>
+</html>
